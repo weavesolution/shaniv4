@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shani Traders | Building material in Saraipali</title>
+<meta name="description" content="Cement, sariya, bricks, sand, pipes, wire, tiles and paint in Saraipali, Mahasamund. Check today's rates, work out quantities and send an enquiry on WhatsApp.">
+<meta name="theme-color" content="#1E252B">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home" data-title="title.home">
+<div id="site-header"></div>
+<main id="main">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1 data-t="h.title">Everything your building needs, from the foundation up.</h1>
+      <p class="hi" id="h-alt"></p>
+      <p class="sub" data-t="h.sub"></p>
+      <div class="hero-cta">
+        <a class="btn btn-dark" href="products.html" data-t="h.browse">Browse products</a>
+        <a class="btn btn-wa" id="hero-wa" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+    <div class="board" aria-labelledby="rb-title">
+      <div class="board-stripe"></div>
+      <div class="board-head"><h2 id="rb-title" data-t="h.rates">Today's rates</h2><time id="rb-date"></time></div>
+      <ul class="rates" id="rate-rows"><li class="rb-empty" data-t="h.loading"></li></ul>
+      <p class="board-foot" id="rb-foot"></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><h2 data-t="h.shopBy"></h2><p data-t="h.shopBySub"></p></div>
+    <div class="cats" id="cat-grid"></div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <a class="calc-promo" href="calculator.html">
+      <span class="calc-promo-fig" aria-hidden="true"><span>L</span><span>×</span><span>H</span><span>=</span><span>?</span></span>
+      <span class="calc-promo-txt"><b data-t="h.calcTitle"></b><span data-t="h.calcSub"></span></span>
+      <span class="btn btn-hv" data-t="h.calcBtn"></span>
+    </a>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head"><h2 data-t="h.how"></h2></div>
+    <ol class="steps">
+      <li><h3 data-t="h.s1t"></h3><p data-t="h.s1"></p></li>
+      <li><h3 data-t="h.s2t"></h3><p data-t="h.s2"></p></li>
+      <li><h3 data-t="h.s3t"></h3><p data-t="h.s3"></p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap">
+    <p data-t="h.strip"></p>
+    <a class="btn btn-hv" href="enquiry.html" data-t="h.stripBtn"></a>
+  </div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const { $, esc, cat, CATS, inr, hasPrice, loadProducts, waLink, svg, t, shopName, unitT, pName, itemsN, icon } = ST;
+  const alt = $('#h-alt'); alt.textContent = t('h.alt'); alt.lang = t('h.altLang');
+  const wa = $('#hero-wa');
+  wa.href = waLink(t('h.waMsg', { shop: shopName() }));
+  wa.innerHTML = svg('wa') + esc(t('h.wa'));
+  $('#rb-foot').innerHTML = esc(t('h.rbFoot')).replace('{link}', `<a href="enquiry.html">${esc(t('h.rbLink'))}</a>`);
+  $('#rb-date').textContent = new Date().toLocaleDateString(ST.HI ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  let ps = [];
+  try { ps = await loadProducts(); }
+  catch (e) { $('#rate-rows').innerHTML = `<li class="rb-empty">${esc(t('h.ratesErr'))}</li>`; }
+  if (ps.length) {
+    const feat = ps.filter(p => p.featured);
+    $('#rate-rows').innerHTML = (feat.length ? feat : ps).slice(0, 7).map(p => `<li><a href="product.html?id=${encodeURIComponent(p.id)}">
+      <span class="rb-name">${esc(pName(p))}<small>${esc(p.brand || cat(p.category).name)}</small>${p.inStock ? '' : `<span class="rb-out">${esc(t('card.out'))}</span>`}</span>
+      ${hasPrice(p) ? `<span class="rb-price">${inr(p.price)}<small>/${esc(unitT(p.unit))}</small></span>` : `<span class="rb-price ask">${esc(t('h.rbAsk'))}</span>`}
+    </a></li>`).join('');
+  }
+  $('#cat-grid').innerHTML = CATS.map(c0 => {
+    const c = cat(c0.id), n = ps.filter(p => p.category === c.id).length;
+    return `<a class="cat" href="products.html?cat=${c.id}">${icon(c.icon)}
+      <span class="cat-stage">${esc(c.stage)}</span><h3>${esc(c.name)}</h3>
+      <span class="cat-count">${ps.length ? (n ? itemsN(n) : esc(t('h.askUs'))) : esc(c.blurb)}</span></a>`;
+  }).join('');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Product | Shani Traders</title>
+<meta name="description" content="Product details, price and enquiry.">
+<meta name="theme-color" content="#1E252B">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="products" data-title="title.products">
+<div id="site-header"></div>
+<main id="main">
+<div class="wrap"><div id="pd"><p style="padding:48px 0" data-t="pd.loading"></p></div>
+<section id="related" class="section" style="padding-top:0" hidden><h2 data-t="pd.related"></h2><div class="grid" id="rel"></div></section></div>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const { $, esc, cat, card, loadProducts, params, priceHTML, media, creditHTML, productWA, svg, t, pName, pDesc, unitT, shopName } = ST;
+  let ps = [];
+  try { ps = await loadProducts(); } catch (e) { }
+  const p = ps.find(x => x.id === params.get('id'));
+  if (!p) { $('#pd').innerHTML = `<div class="empty" style="margin:48px 0"><p>${esc(t('pd.missing'))}</p><a class="btn btn-dark" href="products.html">${esc(t('pd.all'))}</a></div>`; return; }
+  const c = cat(p.category), u = unitT(p.unit);
+  document.title = pName(p) + ' | ' + shopName();
+  $('#pd').innerHTML = `<div class="product">
+    <div><div class="p-media">${p.inStock ? '' : `<span class="tag-out">${esc(t('card.out'))}</span>`}${media(p)}</div>${creditHTML(p)}</div>
+    <div>
+      <p class="crumb"><a href="products.html">${esc(t('p.title'))}</a> / <a href="products.html?cat=${encodeURIComponent(c.id)}">${esc(c.name)}</a></p>
+      <h1>${esc(pName(p))}</h1>
+      <p class="price">${priceHTML(p)}</p>
+      <span class="stock${p.inStock ? '' : ' out'}">${esc(t(p.inStock ? 'pd.in' : 'pd.out'))}</span>
+      ${pDesc(p) ? `<p>${esc(pDesc(p))}</p>` : ''}
+      <div class="buy">
+        <div class="qty"><button type="button" data-step="-1" aria-label="${esc(t('pd.less'))}">−</button><input id="qty" type="number" min="1" value="1" inputmode="numeric" aria-label="${esc(t('pd.qty', { unit: u }))}"><button type="button" data-step="1" aria-label="${esc(t('pd.more'))}">+</button></div>
+        <span class="muted">${esc(u)}</span>
+      </div>
+      <div class="buy">
+        ${p.inStock ? `<button class="btn btn-dark" data-add="${esc(p.id)}" data-qty="#qty">${esc(t('pd.add'))}</button>` : ''}
+        <a class="btn btn-wa" id="wa" target="_blank" rel="noopener">${svg('wa')}${esc(t(p.inStock ? 'pd.wa' : 'pd.waBack'))}</a>
+      </div>
+      <dl class="facts">
+        ${p.brand ? `<dt>${esc(t('pd.brand'))}</dt><dd>${esc(p.brand)}</dd>` : ''}
+        <dt>${esc(t('pd.soldPer'))}</dt><dd>${esc(u)}</dd>
+        <dt>${esc(t('pd.cat'))}</dt><dd>${esc(c.name)}</dd>
+      </dl>
+    </div></div>`;
+  const q = $('#qty'), wa = $('#wa');
+  const sync = () => { wa.href = productWA(p, Math.max(1, parseInt(q.value, 10) || 1)); };
+  $('.qty').addEventListener('click', e => { const b = e.target.closest('[data-step]'); if (!b) return; q.value = Math.max(1, (parseInt(q.value, 10) || 1) + Number(b.dataset.step)); sync(); });
+  q.addEventListener('input', sync); sync();
+  const rel = ps.filter(x => x.category === p.category && x.id !== p.id).slice(0, 4);
+  if (rel.length) { $('#rel').innerHTML = rel.map(card).join(''); $('#related').hidden = false; }
+})();
+</script>
+</body>
+</html>

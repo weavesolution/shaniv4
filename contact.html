@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact | Shani Traders, Saraipali</title>
+<meta name="description" content="Address, phone, WhatsApp and timings of Shani Traders, Main Road Patsendri, Saraipali.">
+<meta name="theme-color" content="#1E252B">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="contact" data-title="title.contact">
+<div id="site-header"></div>
+<main id="main">
+<section class="page-head"><div class="wrap"><h1 data-t="c.title">Contact</h1><p data-t="c.sub"></p></div></section>
+<div class="wrap contact">
+  <div class="panel">
+    <dl id="cinfo"></dl>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:22px" id="cbtns"></div>
+  </div>
+  <iframe class="map" id="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script src="app.js"></script>
+<script>
+(() => {
+  const { $, esc, S, waLink, svg, t, loc, shopName } = ST;
+  const tel = String(S.phone).replace(/[^\d+]/g, '');
+  $('#cinfo').innerHTML = `<dt>${esc(t('c.address'))}</dt><dd>${esc(loc(S, 'address'))}</dd>
+    <dt>${esc(t('c.phone'))}</dt><dd><a href="tel:${tel}">${esc(S.phone)}</a></dd>
+    <dt>${esc(t('c.email'))}</dt><dd><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></dd>
+    <dt>${esc(t('c.hours'))}</dt><dd>${esc(loc(S, 'hours'))}</dd>
+    <dt>${esc(t('c.gstin'))}</dt><dd>${esc(S.gstin)}</dd>`;
+  $('#cbtns').innerHTML = `<a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(t('wa.generic', { shop: shopName() }))}">${svg('wa')}${esc(t('f.whatsapp'))}</a>
+    <a class="btn btn-dark" href="tel:${tel}">${esc(t('c.call'))}</a><a class="btn btn-ghost" href="enquiry.html">${esc(t('c.form'))}</a>`;
+  const m = $('#map'); m.title = t('c.map');
+  m.src = 'https://www.google.com/maps?q=' + encodeURIComponent(S.mapQuery) + '&output=embed&hl=' + ST.lang;
+})();
+</script>
+</body>
+</html>

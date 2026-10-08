@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Products | Shani Traders, Saraipali</title>
+<meta name="description" content="Cement, TMT sariya, bricks, sand, gitti, pipes, wire, tiles and paint with prices. Add to your list and enquire on WhatsApp.">
+<meta name="theme-color" content="#1E252B">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="products" data-title="title.products">
+<div id="site-header"></div>
+<main id="main">
+<section class="page-head"><div class="wrap">
+  <h1 data-t="p.title">Products</h1><p data-t="p.sub"></p>
+</div></section>
+<div class="wrap" style="padding-bottom:56px">
+  <div class="tools">
+    <div class="search"><span id="s-ico"></span><label class="sr" for="q" data-t="p.searchLbl"></label>
+      <input id="q" type="search" data-t-ph="p.search" autocomplete="off"></div>
+    <label class="sr" for="sort" data-t="p.sort"></label>
+    <select id="sort"><option value="rec" data-t="p.rec"></option><option value="low" data-t="p.low"></option><option value="high" data-t="p.high"></option><option value="name" data-t="p.name"></option></select>
+  </div>
+  <div class="chips" id="chips" role="group" data-t-aria="p.cat"></div>
+  <p class="result-count" id="count" aria-live="polite"></p>
+  <div class="grid" id="grid"></div>
+</div>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const { $, esc, cat, CATS, card, loadProducts, params, svg, waLink, t, shopName, pName, itemsN } = ST;
+  $('#s-ico').outerHTML = svg('search');
+  const st = { cat: params.get('cat') || 'all', q: params.get('q') || '', sort: 'rec' };
+  $('#q').value = st.q;
+  let ps = [];
+  try { ps = await loadProducts(); }
+  catch (e) { $('#grid').outerHTML = `<div class="empty"><p>${esc(t('p.err'))}</p><a class="btn btn-wa" href="${waLink(t('wa.generic', { shop: shopName() }))}" target="_blank" rel="noopener">${esc(t('pd.wa'))}</a></div>`; return; }
+  const ids = [...new Set([...CATS.map(c => c.id), ...ps.map(p => p.category)])].filter(id => ps.some(p => p.category === id));
+  function chips() {
+    $('#chips').innerHTML = [['all', t('p.all'), ps.length], ...ids.map(id => [id, cat(id).name, ps.filter(p => p.category === id).length])]
+      .map(([id, name, n]) => `<button class="chip" data-cat="${esc(id)}" aria-pressed="${st.cat === id}">${esc(name)}<span>${n}</span></button>`).join('');
+  }
+  const hay = p => [p.name, p.nameHi, p.brand, p.tags, cat(p.category).name, (CATS.find(c => c.id === p.category) || {}).name, (CATS.find(c => c.id === p.category) || {}).nameHi].join(' ').toLowerCase();
+  function render() {
+    const words = st.q.toLowerCase().split(/\s+/).filter(Boolean);
+    let list = ps.filter(p => (st.cat === 'all' || p.category === st.cat) && words.every(w => hay(p).includes(w)));
+    const pv = p => p.price === '' ? Infinity : p.price;
+    if (st.sort === 'low') list.sort((a, b) => pv(a) - pv(b));
+    if (st.sort === 'high') list.sort((a, b) => (b.price || 0) - (a.price || 0));
+    if (st.sort === 'name') list.sort((a, b) => pName(a).localeCompare(pName(b)));
+    const n = itemsN(list.length);
+    $('#count').textContent = st.cat !== 'all' ? t('p.in', { count: n, cat: cat(st.cat).name }) : n;
+    $('#grid').innerHTML = list.length ? list.map(card).join('') :
+      `<div class="empty" style="grid-column:1/-1"><p>${esc(t('p.none', { q: st.q }))}</p>
+       <a class="btn btn-wa" href="${waLink(t('p.noneWa', { shop: shopName(), q: st.q }))}" target="_blank" rel="noopener">${esc(t('pd.wa'))}</a></div>`;
+    const u = new URLSearchParams(); if (st.cat !== 'all') u.set('cat', st.cat); if (st.q) u.set('q', st.q);
+    history.replaceState(null, '', location.pathname + (u.toString() ? '?' + u : ''));
+  }
+  $('#chips').addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return; st.cat = b.dataset.cat; chips(); render(); });
+  let tm; $('#q').addEventListener('input', e => { clearTimeout(tm); tm = setTimeout(() => { st.q = e.target.value.trim(); render(); }, 150); });
+  $('#sort').addEventListener('change', e => { st.sort = e.target.value; render(); });
+  chips(); render();
+})();
+</script>
+</body>
+</html>

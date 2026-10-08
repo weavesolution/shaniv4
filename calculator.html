@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Material calculator | Shani Traders, Saraipali</title>
+<meta name="description" content="Work out bricks, cement, sand, gitti, sariya, plaster, tiles and paint for your house. Free calculator by Shani Traders, Saraipali.">
+<meta name="theme-color" content="#1E252B">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="calc" data-title="title.calc">
+<div id="site-header"></div>
+<main id="main">
+<section class="page-head"><div class="wrap">
+  <h1 data-t="calc.title">Material calculator</h1><p data-t="calc.sub"></p>
+</div></section>
+<div class="wrap calc">
+  <div class="ctabs" role="tablist" id="ctabs">
+    <button role="tab" data-c="brick" data-t="calc.brick"></button>
+    <button role="tab" data-c="concrete" data-t="calc.concrete"></button>
+    <button role="tab" data-c="plaster" data-t="calc.plaster"></button>
+    <button role="tab" data-c="tiles" data-t="calc.tiles"></button>
+    <button role="tab" data-c="paint" data-t="calc.paint"></button>
+  </div>
+  <div class="calc-grid">
+    <form class="panel cform" id="cform" novalidate>
+      <fieldset data-c="brick">
+        <div class="row2"><div class="field"><label for="b-l"><span data-t="calc.length"></span> (<span data-t="calc.ft"></span>)</label><input id="b-l" type="number" min="0" step="0.1" inputmode="decimal" value="20"></div><div class="field"><label for="b-h"><span data-t="calc.height"></span> (<span data-t="calc.ft"></span>)</label><input id="b-h" type="number" min="0" step="0.1" inputmode="decimal" value="10"></div></div>
+        <div class="field"><label for="b-t" data-t="calc.wallThick"></label><select id="b-t"><option value="0.23" data-t="calc.wall9"></option><option value="0.115" data-t="calc.wall4"></option></select></div>
+        <div class="field"><label for="b-k" data-t="calc.brickType"></label><select id="b-k"><option value="red" data-t="calc.red"></option><option value="fly" data-t="calc.fly"></option></select></div>
+        <div class="row2"><div class="field"><label for="b-m" data-t="calc.mortar"></label><select id="b-m"><option value="6" data-t="calc.mix6"></option><option value="5" data-t="calc.mix5"></option><option value="4" data-t="calc.mix4"></option></select></div><div class="field"><label for="b-o" data-t="calc.openings"></label><input id="b-o" type="number" min="0" step="1" inputmode="decimal" value="0"></div></div>
+      </fieldset>
+      <fieldset data-c="concrete">
+        <div class="field"><label for="c-e" data-t="calc.element"></label><select id="c-e"><option value="slab" data-t="calc.slab"></option><option value="beam" data-t="calc.beam"></option><option value="column" data-t="calc.column"></option><option value="footing" data-t="calc.footing"></option></select></div>
+        <div class="row3"><div class="field"><label for="c-l" data-t="calc.length"></label>
+        <div class="dim"><input id="c-l" type="number" min="0" step="0.1" inputmode="decimal" value="20"><select id="c-l-u" aria-label="unit"><option value="ft" data-t="calc.ft"></option><option value="in" data-t="calc.in"></option></select></div></div><div class="field"><label for="c-w" data-t="calc.width"></label>
+        <div class="dim"><input id="c-w" type="number" min="0" step="0.1" inputmode="decimal" value="15"><select id="c-w-u" aria-label="unit"><option value="ft" data-t="calc.ft"></option><option value="in" data-t="calc.in"></option></select></div></div><div class="field"><label for="c-d" data-t="calc.depth"></label>
+        <div class="dim"><input id="c-d" type="number" min="0" step="0.1" inputmode="decimal" value="5"><select id="c-d-u" aria-label="unit"><option value="ft" data-t="calc.ft"></option><option value="in" data-t="calc.in"></option></select></div></div></div>
+        <div class="row2"><div class="field"><label for="c-m" data-t="calc.mix"></label><select id="c-m"><option value="m20" data-t="calc.m20"></option><option value="m15" data-t="calc.m15"></option><option value="m10" data-t="calc.m10"></option></select></div><div class="field"><label for="c-n" data-t="calc.count"></label><input id="c-n" type="number" min="0" step="1" inputmode="decimal" value="1"></div></div>
+      </fieldset>
+      <fieldset data-c="plaster">
+        <div class="row2"><div class="field"><label for="p-l"><span data-t="calc.length"></span> (<span data-t="calc.ft"></span>)</label><input id="p-l" type="number" min="0" step="0.1" inputmode="decimal" value="20"></div><div class="field"><label for="p-h"><span data-t="calc.height"></span> (<span data-t="calc.ft"></span>)</label><input id="p-h" type="number" min="0" step="0.1" inputmode="decimal" value="10"></div></div>
+        <div class="row2"><div class="field"><label for="p-t" data-t="calc.pThick"></label><select id="p-t"><option value="12" data-t="calc.p12"></option><option value="15" data-t="calc.p15"></option><option value="20" data-t="calc.p20"></option></select></div><div class="field"><label for="p-m" data-t="calc.pMix"></label><select id="p-m"><option value="6" data-t="calc.mix6"></option><option value="5" data-t="calc.mix5"></option><option value="4" data-t="calc.mix4"></option></select></div></div>
+        <div class="field"><label for="p-o" data-t="calc.openings"></label><input id="p-o" type="number" min="0" step="1" inputmode="decimal" value="0"></div>
+      </fieldset>
+      <fieldset data-c="tiles">
+        <div class="row2"><div class="field"><label for="t-l"><span data-t="calc.roomL"></span> (<span data-t="calc.ft"></span>)</label><input id="t-l" type="number" min="0" step="0.1" inputmode="decimal" value="12"></div><div class="field"><label for="t-w"><span data-t="calc.roomW"></span> (<span data-t="calc.ft"></span>)</label><input id="t-w" type="number" min="0" step="0.1" inputmode="decimal" value="10"></div></div>
+        <div class="row2"><div class="field"><label for="t-s" data-t="calc.tileSize"></label><select id="t-s"><option value="600x600x4" data-t="t.600"></option><option value="800x800x3" data-t="t.800"></option><option value="600x1200x2" data-t="t.1200"></option><option value="300x300x11" data-t="t.300"></option><option value="400x400x6" data-t="t.400"></option></select></div>
+        <div class="field"><label for="t-x" data-t="calc.extra"></label><select id="t-x"><option value="1.1" data-t="t.x10"></option><option value="1.05" data-t="t.x5"></option><option value="1.15" data-t="t.x15"></option></select></div></div>
+      </fieldset>
+      <fieldset data-c="paint">
+        <div class="field"><label for="a-f" data-t="calc.paintFor"></label><select id="a-f"><option value="in" data-t="calc.inside"></option><option value="out" data-t="calc.outside"></option></select></div>
+        <div class="row3"><div class="field"><label for="a-l"><span data-t="calc.roomL"></span> (<span data-t="calc.ft"></span>)</label><input id="a-l" type="number" min="0" step="0.1" inputmode="decimal" value="12"></div><div class="field"><label for="a-w"><span data-t="calc.roomW"></span> (<span data-t="calc.ft"></span>)</label><input id="a-w" type="number" min="0" step="0.1" inputmode="decimal" value="10"></div><div class="field"><label for="a-h"><span data-t="calc.wallH"></span> (<span data-t="calc.ft"></span>)</label><input id="a-h" type="number" min="0" step="0.1" inputmode="decimal" value="10"></div></div>
+        <div class="row2"><div class="field"><label for="a-o" data-t="calc.openings"></label><input id="a-o" type="number" min="0" step="1" inputmode="decimal" value="40"></div><div class="field"><label for="a-n" data-t="calc.rooms"></label><input id="a-n" type="number" min="0" step="1" inputmode="decimal" value="1"></div></div>
+        <label class="sw" id="a-c-wrap"><input type="checkbox" id="a-c" checked><span data-t="calc.ceiling"></span></label>
+      </fieldset>
+    </form>
+    <section class="panel cres" aria-live="polite">
+      <h2 data-t="r.need"></h2>
+      <p class="muted" id="r-meta"></p>
+      <ul class="rlist" id="r-list"></ul>
+      <div class="r-acts" id="r-acts">
+        <button class="btn btn-dark" id="r-add" data-t="r.addList"></button>
+        <a class="btn btn-wa" id="r-wa" target="_blank" rel="noopener"></a>
+      </div>
+      <details class="r-how"><summary data-t="r.how"></summary><p id="r-note"></p></details>
+    </section>
+  </div>
+</div>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script src="app.js"></script>
+<script src="calc.js"></script>
+</body>
+</html>
